@@ -1,0 +1,32 @@
+class Solution {
+public:
+//vvimp
+// Complexity
+// Time: O(n) (each index is pushed and popped at most once)
+// Space: O(k) (the deque stores at most k indices)
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+
+        deque<int> dq;
+        vector<int> ans;
+
+        for (int i = 0; i < nums.size(); i++) {
+
+            // Remove indices outside the current window
+            while (!dq.empty() && dq.front() <= i - k)
+                dq.pop_front();
+
+            // Remove smaller elements from the back
+            while (!dq.empty() && nums[dq.back()] <= nums[i])
+                dq.pop_back();
+
+            // Add current index
+            dq.push_back(i);
+
+            // Record the maximum for the current window
+            if (i >= k - 1)
+                ans.push_back(nums[dq.front()]);
+        }
+
+        return ans;
+    }
+};
